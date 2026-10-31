@@ -1,0 +1,6 @@
+{
+  "name": "EVENT MANAGER — Campus Event & Registration Platform",
+  "description": "A full-stack college event discovery, registration, FAQ, and organizer management platform for students and campus event hosts.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

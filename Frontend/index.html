@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EVENT MANAGER — College Event Management Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- SheetJS for client-side Excel (.xlsx) export -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- TOP NAVBAR -->
+  <header class="navbar">
+    <a href="#" class="brand" id="brandLogo">EVENT MANAGER</a>
+    <nav class="nav-links" id="navLinks"></nav>
+    <div class="nav-action" id="navAction"></div>
+  </header>
+
+  <!-- NOTIFICATION TOAST BANNER -->
+  <div id="toastBanner" class="toast hidden" role="status" aria-live="polite"></div>
+
+  <!-- VIEW 1: AUTHENTICATION -->
+  <main id="authView" class="container auth-container">
+    <section class="auth-intro">
+      <p class="kicker">Campus Event Management Platform</p>
+      <h1 class="display-title">Discover, host, and manage every college event in one unified place.</h1>
+      <p class="lead-copy">
+        Sign in or create an account as a <strong>Student</strong> to discover upcoming events, register participants, and ask organizers questions—or as an <strong>Organizer</strong> to create events, manage rosters, and export Excel reports.
+      </p>
+      <div class="auth-highlights">
+        <div class="highlight-row">
+          <span class="mono-index">01</span>
+          <div>
+            <strong>Top 5 Event</strong>
+            <p>Popular college events with the highest student registrations automatically rank in the hero spotlight.</p>
+          </div>
+        </div>
+        <div class="highlight-row">
+          <span class="mono-index">02</span>
+          <div>
+            <strong>Automated Event Lifecycle</strong>
+            <p>Completed events are cleanly removed from the public website listing and archived in personal history.</p>
+          </div>
+        </div>
+        <div class="highlight-row">
+          <span class="mono-index">03</span>
+          <div>
+            <strong>Multi-Participant Excel Export</strong>
+            <p>Register all group/team members with full contact details and export complete participant lists directly to Excel.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="auth-card">
+      <div class="segmented-control" role="tablist" aria-label="Select User Role">
+        <button type="button" class="segment-btn active" data-role="STUDENT" id="roleStudentBtn">STUDENT</button>
+        <button type="button" class="segment-btn" data-role="ORGANIZER" id="roleOrganizerBtn">ORGANIZER</button>
+      </div>
+
+      <div class="auth-mode-tabs">
+        <button type="button" class="mode-tab active" id="modeLoginBtn">Sign In</button>
+        <button type="button" class="mode-tab" id="modeRegisterBtn">Create New Account</button>
+      </div>
+
+      <!-- Account Already Exists Alert Banner -->
+      <div id="accountExistsBanner" class="exists-banner hidden">
+        <p id="accountExistsText">An account with this username already exists.</p>
+        <button type="button" class="btn-secondary btn-sm" id="switchToExistingBtn">
+          Switch to Existing Account Sign In
+        </button>
+      </div>
+
+      <div id="authErrorBox" class="error-box hidden"></div>
+
+      <form id="authForm" class="form-stack">
+        <div class="field">
+          <label for="authUsername">Username</label>
+          <input type="text" id="authUsername" required minlength="3" placeholder="e.g. rahul_cs26" autocomplete="username" />
+        </div>
+
+        <div id="registerExtraFields" class="form-stack hidden">
+          <div class="field">
+            <label for="authFullName">Full Name</label>
+            <input type="text" id="authFullName" placeholder="e.g. Rahul Sharma" />
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="authEmail">Email ID</label>
+              <input type="email" id="authEmail" placeholder="name@college.edu" />
+            </div>
+            <div class="field">
+              <label for="authPhone">Phone Number</label>
+              <input type="tel" id="authPhone" placeholder="+91 98765 43210" />
+            </div>
+          </div>
+          <div class="field">
+            <label for="authDept" id="authDeptLabel">Department / Year</label>
+            <input type="text" id="authDept" placeholder="Computer Science · 3rd Year" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="authPassword">Password</label>
+          <input type="password" id="authPassword" required minlength="6" placeholder="Minimum 6 characters" autocomplete="current-password" />
+        </div>
+
+        <button type="submit" class="btn-primary btn-full" id="authSubmitBtn">
+          Sign In as Student
+        </button>
+      </form>
+    </section>
+  </main>
+
+  <!-- VIEW 2: STUDENT DASHBOARD -->
+  <main id="studentView" class="hidden">
+    <!-- NETFLIX-STYLE TOP 5 POPULAR ACTIVE EVENTS HERO -->
+    <section class="hero-showcase" id="studentHeroSection">
+      <div id="heroContent" class="container"></div>
+    </section>
+
+    <!-- EXPLORE ACTIVE EVENTS -->
+    <section class="container events-section" id="browseSection">
+      <div class="section-header">
+        <div>
+          <h2>Explore Active Campus Events</h2>
+          <p class="muted-text">Search events and filter by category. Completed events are automatically removed from the website.</p>
+        </div>
+        <div class="search-box">
+          <input type="search" id="eventSearchInput" placeholder="Search events, venues, organizers..." />
+        </div>
+      </div>
+
+      <div class="category-bar" id="categoryFilterBar"></div>
+
+      <div id="eventsGrid" class="events-grid"></div>
+    </section>
+  </main>
+
+  <!-- RIGHT SLIDE-OVER DASHBOARD DRAWER (RENAMED TO DASHBOARD) -->
+  <div id="studentDrawerBackdrop" class="drawer-backdrop hidden"></div>
+  <aside id="studentDrawer" class="right-drawer hidden" aria-label="Dashboard">
+    <div class="drawer-header">
+      <div>
+        <p class="muted-label">Student Account</p>
+        <h3 id="drawerStudentName">—</h3>
+        <p class="muted-meta" id="drawerStudentMeta">—</p>
+      </div>
+      <button type="button" class="btn-ghost" id="closeDrawerBtn">Close</button>
+    </div>
+
+    <div class="segmented-control drawer-tabs">
+      <button type="button" class="segment-btn active" id="tabCurrentRegs">Current Registered</button>
+      <button type="button" class="segment-btn" id="tabHistoryRegs">History</button>
+    </div>
+
+    <div id="drawerRegistrationsList" class="drawer-body"></div>
+
+    <div class="drawer-footer">
+      <button type="button" class="btn-secondary btn-full" id="studentLogoutBtn">Sign Out</button>
+    </div>
+  </aside>
+
+  <!-- VIEW 3: ORGANIZER DASHBOARD -->
+  <main id="organizerView" class="container organizer-container hidden">
+    <div class="organizer-toolbar">
+      <div class="segmented-control">
+        <button type="button" class="segment-btn active" id="orgTabManage">Manage Events</button>
+        <button type="button" class="segment-btn" id="orgTabCreate">Create New Event</button>
+        <button type="button" class="segment-btn" id="orgTabProfile">Organizer Profile</button>
+      </div>
+    </div>
+
+    <!-- MANAGE EVENTS -->
+    <section id="orgManageSection">
+      <div id="orgEventsList" class="org-events-layout"></div>
+    </section>
+
+    <!-- CREATE EVENT -->
+    <section id="orgCreateSection" class="hidden">
+      <div class="panel-card form-panel">
+        <h2>Publish a New Campus Event</h2>
+        <p class="muted-text">Configure venue, dates, team size limits, and FAQ for students.</p>
+        <form id="createEventForm" class="form-stack">
+          <div class="field-row">
+            <div class="field">
+              <label for="evTitle">Event Name *</label>
+              <input type="text" id="evTitle" required placeholder="e.g. National College Hackathon 2026" />
+            </div>
+            <div class="field">
+              <label for="evCategory">Category *</label>
+              <input type="text" id="evCategory" list="categorySuggestions" required placeholder="Hackathon, Sports, Music, Dance, Art..." />
+              <datalist id="categorySuggestions">
+                <option value="Hackathon"></option>
+                <option value="Sports"></option>
+                <option value="Music"></option>
+                <option value="Dance"></option>
+                <option value="Art"></option>
+                <option value="Technical"></option>
+                <option value="Cultural"></option>
+                <option value="Workshop"></option>
+              </datalist>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="evDescription">Event Information &amp; Rules *</label>
+            <textarea id="evDescription" rows="4" required placeholder="Describe agenda, rules, prizes, and instructions for participants..."></textarea>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="evVenue">Venue *</label>
+              <input type="text" id="evVenue" required placeholder="e.g. Main Auditorium, Block C" />
+            </div>
+            <div class="field">
+              <label for="evPhone">Organizer Contact Phone *</label>
+              <input type="tel" id="evPhone" required placeholder="+91 98765 43210" />
+            </div>
+          </div>
+
+          <div class="field-row three-cols">
+            <div class="field">
+              <label for="evDate">Event Date *</label>
+              <input type="date" id="evDate" required />
+            </div>
+            <div class="field">
+              <label for="evTime">Start Time *</label>
+              <input type="time" id="evTime" required />
+            </div>
+            <div class="field">
+              <label for="evDeadline">Final Registration Date *</label>
+              <input type="date" id="evDeadline" required />
+            </div>
+          </div>
+
+          <div class="field-row three-cols">
+            <div class="field">
+              <label for="evCost">Registration Cost (0 for Free)</label>
+              <input type="number" id="evCost" min="0" step="1" value="0" required />
+            </div>
+            <div class="field">
+              <label for="evMinTeam">Min Participants / Reg</label>
+              <input type="number" id="evMinTeam" min="1" value="1" required />
+            </div>
+            <div class="field">
+              <label for="evMaxTeam">Max Participants / Reg</label>
+              <input type="number" id="evMaxTeam" min="1" value="4" required />
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="evCapacity">Max Total Capacity (Optional)</label>
+              <input type="number" id="evCapacity" min="1" placeholder="Unlimited" />
+            </div>
+            <div class="field">
+              <label for="evImageUrl">Event Banner Image URL (Optional)</label>
+              <input type="url" id="evImageUrl" placeholder="https://example.com/banner.jpg" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Initial FAQ (Optional)</label>
+            <div class="field-row">
+              <input type="text" id="evFaqQ" placeholder="Question (e.g. Are inter-college teams allowed?)" />
+              <input type="text" id="evFaqA" placeholder="Answer (e.g. Yes, teams of up to 4 students.)" />
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-primary">Create &amp; Publish Event</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- ORGANIZER PROFILE -->
+    <section id="orgProfileSection" class="hidden">
+      <div id="orgProfileContainer" class="panel-card"></div>
+    </section>
+  </main>
+
+  <!-- EVENT DETAILS & MULTI-PARTICIPANT REGISTRATION MODAL -->
+  <div id="eventModalBackdrop" class="modal-backdrop hidden">
+    <div class="modal-card" role="dialog" aria-modal="true">
+      <div id="eventModalContent"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
