@@ -1,0 +1,61 @@
+{
+  "users": [
+    {
+      "id": "eb97c67b-3b17-4327-b7b7-979f7133907d",
+      "username": "priya_p",
+      "password_salt": "de682a242f94f86303993bda3f8953ac",
+      "password_hash": "9a50baf2b44837c6f78b9b73684d386804d2613b5b08e85cfc19c516b8069ae070cff120bd63f0c2ea0cb988564841aef3c48e85966cf099bc14721ceeffb74a",
+      "full_name": "Priya Patel",
+      "email": "priya.patel@college.edu",
+      "phone": "9876500111",
+      "department": "CSE · 3rd Year",
+      "role": "STUDENT",
+      "base_events_count": 4,
+      "created_at": "2026-10-02T03:03:48.287Z"
+    },
+    {
+      "id": "9ab09a58-1d85-40b9-8b90-a3ed9f0c3bc3",
+      "username": "aarav_s",
+      "password_salt": "4e22239cc6c00afbd07693bc09507899",
+      "password_hash": "a92cf8d3a0b00af67d1f8bd6d58ecaa7f1092b79bc0bb2ffffbe11d55493552702e0d505ed7ebfaac2fbc5644bb7a664dffeaad41cf094b7f4cb8b2186b8e1a0",
+      "full_name": "Aarav Sharma",
+      "email": "aarav.sharma@college.edu",
+      "phone": "9876500222",
+      "department": "Mechanical · Final Year",
+      "role": "STUDENT",
+      "base_events_count": 3,
+      "created_at": "2026-10-02T03:03:48.317Z"
+    },
+    {
+      "id": "b5a8b8fe-3d67-4713-899a-e7e7e88ac0fc",
+      "username": "ananya_i",
+      "password_salt": "677ffca10301cb105605c11662564825",
+      "password_hash": "76628b4399da28bfe36f5e214385257d783057877620e14e444002bff32c241056e6d76efd25b2b0cdc0aba4083c0d69bf699f11db62921ca275b055649d8b4c",
+      "full_name": "Ananya Iyer",
+      "email": "ananya.iyer@college.edu",
+      "phone": "9876500333",
+      "department": "ECE · 2nd Year",
+      "role": "STUDENT",
+      "base_events_count": 2,
+      "created_at": "2026-10-02T03:03:48.346Z"
+    },
+    {
+      "id": "201e8d93-eca0-4679-bc3a-00eb945ee0be",
+      "username": "rohan_n",
+      "password_salt": "2b9e278da309654ef7acdbba31380421",
+      "password_hash": "1f3e441136dc8a6d2289992f43ca9be2128ec35ae31b9e946a28f880ee3524c9ad0406526c40a610c2377eec843bad0e7481cfc54a476e4f34b01b7b0a8c4c34",
+      "full_name": "Rohan Nair",
+      "email": "rohan.nair@college.edu",
+      "phone": "9876500444",
+      "department": "Information Tech · 1st Year",
+      "role": "STUDENT",
+      "base_events_count": 1,
+      "created_at": "2026-10-02T03:03:48.375Z"
+    }
+  ],
+  "events": [],
+  "registrations": [],
+  "faqs": [],
+  "announcements": [],
+  "feedbacks": []
+}
