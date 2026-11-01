@@ -5,7 +5,7 @@
 const API_BASE_URL =
   window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
     ? "http://127.0.0.1:8000"
-    : "https://college-event-management-platform-iota.vercel.app";
+    : "https://college-event-management-platform-qes5n9aiu.vercel.app";
 
 
 const state = {
@@ -568,8 +568,8 @@ function renderStudentDrawerContent() {
 
   if (!list.length) {
     container.innerHTML = `<div class="empty-state">${state.drawerTab === "CURRENT"
-        ? "No upcoming registered events yet."
-        : "Completed events automatically move to History."
+      ? "No upcoming registered events yet."
+      : "Completed events automatically move to History."
       }</div>`;
     return;
   }
