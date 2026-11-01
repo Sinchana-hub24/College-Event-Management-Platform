@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-MONGODB_URI = os.getenv("MONGODB_URI", "mongodb+srv://User1:qwe123qwe@cluster0.l3b9cbn.mongodb.net/")
+MONGODB_URI = os.getenv("MONGODB_URI", "mongodb+srv://sss:abcd123@cluster0.l3b9cbn.mongodb.net/")
 DATABASE_NAME = os.getenv("DATABASE_NAME", "college_event_manager")
 
 client = AsyncIOMotorClient(MONGODB_URI)
