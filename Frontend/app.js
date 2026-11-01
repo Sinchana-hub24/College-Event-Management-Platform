@@ -4,8 +4,9 @@
  */
 const API_BASE_URL =
   window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
-    ? "http://127.0.0.1:8000/api"
-    : "/api";
+    ? "http://127.0.0"
+    : "https://college-event-management-platform.onrender.com/";
+
 
 const state = {
   token: localStorage.getItem("em_token") || null,
