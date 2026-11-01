@@ -9,3 +9,5 @@ bcrypt
 PyJWT
 pandas>=3.1.0
 openpyxl
+dnspython
+
