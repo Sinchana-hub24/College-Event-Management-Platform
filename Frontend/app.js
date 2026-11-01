@@ -4,8 +4,8 @@
  */
 const API_BASE_URL =
   window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
-    ? "http://127.0.0"
-    : "https://college-event-management-platform-iota.vercel.app/";
+    ? "http://127.0.0.1:8000"
+    : "https://college-event-management-platform-iota.vercel.app";
 
 
 const state = {
@@ -116,7 +116,7 @@ document.getElementById("authUsername").addEventListener("blur", async (e) => {
     } else {
       banner.classList.add("hidden");
     }
-  } catch (_) {}
+  } catch (_) { }
 });
 
 document.getElementById("switchToExistingBtn").addEventListener("click", () => {
@@ -239,8 +239,8 @@ function renderHeroShowcase() {
     </div>
     <div class="top5-strip">
       ${state.topEvents
-        .map(
-          (ev, idx) => `
+      .map(
+        (ev, idx) => `
         <button type="button" class="top5-thumb ${idx === state.activeHeroIndex ? "active" : ""}" onclick="selectHeroSlide(${idx})">
           <span class="rank-num">0${idx + 1}</span>
           <div>
@@ -249,8 +249,8 @@ function renderHeroShowcase() {
           </div>
         </button>
       `
-        )
-        .join("")}
+      )
+      .join("")}
     </div>
   `;
 }
@@ -307,11 +307,10 @@ function renderEventsGrid() {
       (ev) => `
       <article class="event-card" onclick="openEventModal('${ev.id}')">
         <div class="card-banner">
-          ${
-            ev.image_url
-              ? `<img src="${escapeHtml(ev.image_url)}" alt="${escapeHtml(ev.title)}" referrerpolicy="no-referrer" />`
-              : `<div class="card-fallback">${escapeHtml(ev.category)}</div>`
-          }
+          ${ev.image_url
+          ? `<img src="${escapeHtml(ev.image_url)}" alt="${escapeHtml(ev.title)}" referrerpolicy="no-referrer" />`
+          : `<div class="card-fallback">${escapeHtml(ev.category)}</div>`
+        }
         </div>
         <div class="card-body">
           <p class="inline-meta">${escapeHtml(ev.category)} · Register by ${escapeHtml(ev.registration_deadline)}</p>
@@ -361,16 +360,15 @@ window.openEventModal = async (eventId) => {
       <div><strong>Organizer Contact:</strong> <a href="tel:${escapeHtml(ev.organizer_phone)}">${escapeHtml(ev.organizer_phone)}</a></div>
     </div>
 
-    ${
-      state.user?.role === "STUDENT"
-        ? existingReg
-          ? `
+    ${state.user?.role === "STUDENT"
+      ? existingReg
+        ? `
             <div style="padding:14px;background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;border-radius:8px;margin-bottom:24px;">
               <strong>Registration Confirmed (Pass ${escapeHtml(existingReg.registration.reference_code)})</strong>
               <div style="margin-top:4px;font-size:0.85rem;">Registered ${existingReg.registration.participant_count} participant(s).</div>
             </div>
           `
-          : `
+        : `
             <form id="multiRegForm" class="form-stack" style="padding:18px;border:1px solid var(--border);border-radius:8px;margin-bottom:24px;">
               <h4>Register Participants for This Event</h4>
               <p class="muted-meta">Collect details for all participating members:</p>
@@ -389,17 +387,16 @@ window.openEventModal = async (eventId) => {
               <button type="submit" class="btn-primary" style="margin-top:12px;">Confirm Registration</button>
             </form>
           `
-        : ""
+      : ""
     }
 
     <div style="border-top:1px solid var(--border);padding-top:20px;">
       <h3 style="margin-bottom:12px;">Event FAQs &amp; Student Questions</h3>
       <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px;">
-        ${
-          faqs.length
-            ? faqs
-                .map(
-                  (f) => `
+        ${faqs.length
+      ? faqs
+        .map(
+          (f) => `
               <div style="padding:12px;border:1px solid var(--border);border-radius:8px;">
                 <div style="font-weight:600;font-size:0.9rem;">Q: ${escapeHtml(f.question)}</div>
                 <div style="font-size:0.85rem;color:var(--ink-muted);margin-top:4px;">
@@ -407,10 +404,10 @@ window.openEventModal = async (eventId) => {
                 </div>
               </div>
             `
-                )
-                .join("")
-            : `<p class="muted-text">No questions asked yet. Ask the organizer below.</p>`
-        }
+        )
+        .join("")
+      : `<p class="muted-text">No questions asked yet. Ask the organizer below.</p>`
+    }
       </div>
 
       <form id="askFaqForm" style="display:flex;gap:10px;">
@@ -570,11 +567,10 @@ function renderStudentDrawerContent() {
   const container = document.getElementById("drawerRegistrationsList");
 
   if (!list.length) {
-    container.innerHTML = `<div class="empty-state">${
-      state.drawerTab === "CURRENT"
+    container.innerHTML = `<div class="empty-state">${state.drawerTab === "CURRENT"
         ? "No upcoming registered events yet."
         : "Completed events automatically move to History."
-    }</div>`;
+      }</div>`;
     return;
   }
 
@@ -679,17 +675,16 @@ async function loadOrganizerEvents() {
       <div class="panel-card" style="padding:16px;display:flex;flex-direction:column;gap:8px;">
         <p class="muted-label" style="margin-bottom:4px;">Your Hosted Events (${events.length})</p>
         ${events
-          .map(
-            (item) => `
-            <button type="button" onclick="selectOrgEvent('${item.id}')" style="text-align:left;padding:10px 12px;border-radius:8px;border:1px solid ${
-              item.id === ev.id ? "var(--accent)" : "var(--border)"
-            };background:${item.id === ev.id ? "#fff1f2" : "var(--surface)"};cursor:pointer;">
+      .map(
+        (item) => `
+            <button type="button" onclick="selectOrgEvent('${item.id}')" style="text-align:left;padding:10px 12px;border-radius:8px;border:1px solid ${item.id === ev.id ? "var(--accent)" : "var(--border)"
+          };background:${item.id === ev.id ? "#fff1f2" : "var(--surface)"};cursor:pointer;">
               <div style="font-weight:600;font-size:0.9rem;">${escapeHtml(item.title)}</div>
               <div class="inline-meta">${item.participants_count} participants · ${escapeHtml(item.event_date)}</div>
             </button>
           `
-          )
-          .join("")}
+      )
+      .join("")}
       </div>
 
       <div style="display:flex;flex-direction:column;gap:24px;">
@@ -707,13 +702,12 @@ async function loadOrganizerEvents() {
             </div>
           </div>
 
-          ${
-            registrations.length
-              ? `
+          ${registrations.length
+      ? `
               <div style="display:flex;flex-direction:column;gap:12px;">
                 ${registrations
-                  .map(
-                    (reg) => `
+        .map(
+          (reg) => `
                   <div style="padding:12px;border:1px solid var(--border);border-radius:8px;background:#f8fafc;">
                     <div style="display:flex;justify-content:space-between;font-weight:600;font-size:0.85rem;">
                       <span>Pass: ${escapeHtml(reg.reference_code)} ${reg.team_name ? `· Team: ${escapeHtml(reg.team_name)}` : ""}</span>
@@ -731,8 +725,8 @@ async function loadOrganizerEvents() {
                       </thead>
                       <tbody>
                         ${(reg.participants || [])
-                          .map(
-                            (m, idx) => `
+              .map(
+                (m, idx) => `
                           <tr>
                             <td>${idx + 1}</td>
                             <td>${escapeHtml(m.name)}</td>
@@ -741,18 +735,18 @@ async function loadOrganizerEvents() {
                             <td>${escapeHtml(m.roll_no || "—")}</td>
                           </tr>
                         `
-                          )
-                          .join("")}
+              )
+              .join("")}
                       </tbody>
                     </table>
                   </div>
                 `
-                  )
-                  .join("")}
+        )
+        .join("")}
               </div>
             `
-              : `<p class="muted-text">No student registrations yet for this event.</p>`
-          }
+      : `<p class="muted-text">No student registrations yet for this event.</p>`
+    }
         </div>
 
         <div class="panel-card">
@@ -807,11 +801,10 @@ async function loadOrganizerEvents() {
         <div class="panel-card">
           <h3 style="margin-bottom:12px;">Student Questions &amp; FAQs (${faqs.length})</h3>
           <div style="display:flex;flex-direction:column;gap:12px;">
-            ${
-              faqs.length
-                ? faqs
-                    .map(
-                      (f) => `
+            ${faqs.length
+      ? faqs
+        .map(
+          (f) => `
                   <div style="padding:12px;border:1px solid var(--border);border-radius:8px;">
                     <div style="font-weight:600;">Q: ${escapeHtml(f.question)} <span class="inline-meta">by ${escapeHtml(f.asked_by_name)}</span></div>
                     <div style="display:flex;gap:8px;margin-top:8px;">
@@ -820,10 +813,10 @@ async function loadOrganizerEvents() {
                     </div>
                   </div>
                 `
-                    )
-                    .join("")
-                : `<p class="muted-text">No student questions submitted yet.</p>`
-            }
+        )
+        .join("")
+      : `<p class="muted-text">No student questions submitted yet.</p>`
+    }
           </div>
         </div>
       </div>
